@@ -1,0 +1,7 @@
+# Dependências de execução da análise (versões fixadas e auditadas com pip-audit)
+networkx==3.7
+pandas==3.1.0
+numpy==2.5.4
+matplotlib==3.11.2
+# scipy é exigido pelo NetworkX em pagerank() e eigenvector_centrality()
+scipy==1.18.1

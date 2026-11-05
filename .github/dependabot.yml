@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Dependências Python (requirements.txt na raiz)
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    groups:
+      # Atualizações menores e de correção agrupadas em um único PR
+      python-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
