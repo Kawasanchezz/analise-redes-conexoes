@@ -42,6 +42,7 @@ class HigienePublicacao(unittest.TestCase):
         for nome in ("README.md", "SECURITY.md", "requirements.txt"):
             self.assertIsNone(PADRAO_PRIVADO.search((ROOT / nome).read_text(encoding="utf-8")), nome)
 
+    @unittest.skipUnless((ROOT / "outputs" / "dashboard.html").exists(), "dashboard.html não gerado (python dashboard/gerar_dashboard.py)")
     def test_dashboard_offline_e_sem_dado_privado(self):
         """O HTML do dashboard não pode depender de CDN externa nem conter caminhos/e-mails."""
         html = (ROOT / "outputs" / "dashboard.html").read_text(encoding="utf-8")

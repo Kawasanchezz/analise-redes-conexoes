@@ -1,6 +1,7 @@
 """Gera outputs/dashboard.html: dashboard interativo e autossuficiente da rede (sem servidor, sem internet).
 
 Uso (na raiz do projeto):  python dashboard/gerar_dashboard.py
+Arquivos: modelo_dashboard.html (estrutura), estilo.css, app.js e vendor/vis-network.min.js, todos embutidos no HTML gerado.
 Dependências: apenas as de requirements.txt. A biblioteca de grafos do navegador (vis-network, licença
 MIT/Apache-2.0) está em dashboard/vendor/ e é embutida no HTML.
 """
@@ -93,12 +94,19 @@ def montar_dados(G: nx.Graph) -> dict:
     }
 
 
+def _ler(nome: str) -> str:
+    return (Path(__file__).parent / nome).read_text(encoding="utf-8")
+
+
 def renderizar(dados: dict) -> str:
-    modelo = (Path(__file__).parent / "modelo_dashboard.html").read_text(encoding="utf-8")
+    """Monta um único HTML autossuficiente a partir de modelo, CSS, JS da aplicação e vis-network."""
     # '<' escapado: nenhum dado pode fechar a tag <script> nem injetar HTML
     dados_json = json.dumps(dados, ensure_ascii=False).replace("<", "\\u003c")
-    return (modelo.replace("/*__VIS_JS__*/", VIS_JS.read_text(encoding="utf-8").replace("</script", "<\\/script"))
-                  .replace("/*__DADOS__*/", dados_json))
+    return (_ler("modelo_dashboard.html")
+            .replace("/*__CSS__*/", _ler("estilo.css").replace("</style", "<\\/style"))
+            .replace("/*__VIS_JS__*/", VIS_JS.read_text(encoding="utf-8").replace("</script", "<\\/script"))
+            .replace("/*__APP_JS__*/", _ler("app.js").replace("</script", "<\\/script"))
+            .replace("/*__DADOS__*/", dados_json))
 
 
 if __name__ == "__main__":

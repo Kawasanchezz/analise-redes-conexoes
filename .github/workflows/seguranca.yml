@@ -1,0 +1,48 @@
+name: Verificações de segurança
+
+# Bot de segurança do projeto: audita dependências, analisa o código e roda os testes.
+# Sem ações de terceiros (nenhum "uses:"), de acordo com a política do repositório; o token é somente leitura.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 9 * * 1"   # toda segunda-feira, 09:00 UTC (novas vulnerabilidades surgem com o tempo)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seguranca-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  seguranca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Baixar o código (git direto, sem ação de terceiros)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          git init -q .
+          AUTH="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c http.extraheader="AUTHORIZATION: basic $AUTH" fetch -q --depth 1 "https://github.com/$REPO.git" "$SHA"
+          git checkout -q FETCH_HEAD
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt bandit==1.9.4 pip-audit==2.10.1
+
+      - name: Auditoria de dependências (pip-audit)
+        run: pip-audit -r requirements.txt
+
+      - name: Análise estática do código (bandit)
+        run: bandit -r dashboard
+
+      - name: Testes de reprodutibilidade e higiene
+        run: python -m unittest discover -s tests -v

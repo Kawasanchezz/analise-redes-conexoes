@@ -16,6 +16,7 @@ Use o **GitHub Security Advisories** do repositório (aba *Security* → *Report
 - Dependências com versões fixadas em `requirements.txt` e auditadas com `pip-audit`.
 - Análise estática do código do notebook com `bandit`.
 - `.gitignore` cobre `.env`, chaves, ambientes virtuais, caches e arquivos de IDE.
+- **Bots de segurança:** o Dependabot (`.github/dependabot.yml`) atualiza dependências e alerta sobre vulnerabilidades; o workflow `.github/workflows/seguranca.yml` roda `pip-audit`, `bandit` e os testes a cada push, a cada pull request e semanalmente, com token somente leitura e sem ações de terceiros.
 - Teste automatizado (`tests/test_publicacao.py`) que falha se o notebook ou os CSVs contiverem caminhos locais ou e-mails, se as dependências deixarem de ser fixadas ou se o `.gitignore` perder as regras de segredos.
 - O `dashboard.html` é gerado sem CDN externa (biblioteca embutida em `dashboard/vendor/`), com *Content-Security-Policy* restritiva (`default-src 'none'`), dados escapados no JSON e conteúdo inserido na página só via `textContent` (sem `innerHTML`).
 - O notebook não usa `eval`, `exec`, `pickle`, `subprocess` nem acesso à rede; os dados vêm de arquivos locais.

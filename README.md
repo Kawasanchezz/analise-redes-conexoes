@@ -8,8 +8,9 @@ Análise de rede social com teoria dos grafos: mapeia conexões, calcula central
 ```
 data/       edges_raw.csv, edges_clean.csv
 notebooks/  analise_redes.ipynb  (executado, com saídas)
-outputs/    figuras PNG, tabelas CSV e dashboard.html
-dashboard/  gerar_dashboard.py, modelo_dashboard.html, vendor/
+outputs/    figuras PNG e tabelas CSV (o dashboard.html é gerado aqui)
+dashboard/  gerar_dashboard.py, modelo_dashboard.html (estrutura), estilo.css, app.js, vendor/
+.github/    dependabot.yml, CODEOWNERS e workflows/seguranca.yml
 docs/       dashboard.png (imagem usada no README)
 tests/      testes de reprodutibilidade e higiene
 requirements.txt
@@ -31,7 +32,9 @@ Seeds fixas (`SEED = 42`) e dependências com versões fixadas tornam os resulta
 ## Dashboard interativo
 
 ![Dashboard interativo da rede de personagens de Os Miseráveis (tema escuro)](docs/dashboard.png)
-Abra [outputs/dashboard.html](outputs/dashboard.html) no navegador (funciona sem internet e sem servidor):
+
+Gere o dashboard com `python dashboard/gerar_dashboard.py` e abra `outputs/dashboard.html` no navegador (funciona sem internet e sem servidor). Ele não é versionado, porque é recriado a partir dos arquivos de `dashboard/`:
+
 - **Rede** com tamanho do nó por métrica (grau, intermediação, proximidade, autovetor, PageRank) e cor por comunidade (paleta acessível);
 - **Destaque da vizinhança** ao clicar num nó, com painel de detalhes e vizinhos clicáveis;
 - **Busca** de personagem, **filtro** por comunidade e botões de zoom;

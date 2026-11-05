@@ -238,3 +238,5 @@ $RECYCLE.BIN/
 CLAUDE.md
 # variação em minúsculas do arquivo de pasta do Windows (git diferencia maiúsculas em Linux/macOS)
 desktop.ini
+# dashboard gerado (recriado por dashboard/gerar_dashboard.py)
+outputs/dashboard.html
