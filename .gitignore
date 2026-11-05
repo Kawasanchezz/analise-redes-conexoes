@@ -230,10 +230,11 @@ ehthumbs.db
 $RECYCLE.BIN/
 *.local
 
-# --- NOVO: específico deste projeto (Jupyter + Claude Code) ---
+# --- Específico deste projeto (Jupyter e arquivos locais de assistentes) ---
 # checkpoints automáticos do Jupyter (cópias do notebook, podem ter saídas antigas)
 .ipynb_checkpoints/
-# configuração/sessões locais do Claude Code
+# configuração, sessões e instruções locais de assistentes de código (não versionar)
 .claude/
+CLAUDE.md
 # variação em minúsculas do arquivo de pasta do Windows (git diferencia maiúsculas em Linux/macOS)
 desktop.ini
